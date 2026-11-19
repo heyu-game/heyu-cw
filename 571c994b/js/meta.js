@@ -1,6 +1,6 @@
 // meta 系统：离线心跳、抽签、乱码句与复制替换、各种注入
-import { store } from './store.js?v=1794942947';
-import { offlineText } from './prompt.js?v=1794942947';
+import { store } from './store.js?v=1795105194';
+import { offlineText } from './prompt.js?v=1795105194';
 
 // —— 离线按「人不在」算：lastActive 在每次点击、按键、触摸、滚动时更新；切到后台时也记一次 ——
 // 只用时间戳相减，不依赖计时器（后台标签页、电脑睡眠时计时器会被暂停）
@@ -118,7 +118,7 @@ export const EXTRA_META_MAX = 3;
 export function canExtraMeta(s, id) {
   const m = s.meta; m.extra ||= {}; m.extraCount ||= 0;
   if (m.extraCount >= EXTRA_META_MAX) return false;
-  if (id === 'late') { const d = new Date().toDateString(); if (m.extra.late === d) return false; }
+  if (id === 'late') { const d = new Date().toDateString(); if (m.extra.late === d || s.c?.g3Real === d) return false; }   // 时差（G3）出过的那天不再出凌晨那句
   else if (m.extra[id]) return false;
   return Math.random() < (EXTRA_META[id]?.p ?? 1);
 }
